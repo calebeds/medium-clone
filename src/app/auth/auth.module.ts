@@ -8,11 +8,12 @@ import { StoreModule } from '@ngrx/store';
 import { reducers } from 'src/app/auth/store/reducers';
 import { AuthService } from './services/auth-service/auth.service';
 import { EffectsModule } from '@ngrx/effects';
-import { RegisterEffect } from './store/effects/register.effect';
+import { RegisterEffect } from 'src/app/auth/store/effects/register.effect';
 import { BackendErrorsMessagesModule } from '../shared/modules/backend-errors-messages/backend-errors-messages.module';
 import { PersistenceService } from '../shared/services/persistence/persistence.service';
 import { LoginEffect } from './store/effects/login.effect';
 import { LoginComponent } from './components/login/login.component';
+import { GetCurrentUserEffect } from './store/effects/get-current-user.effect';
 
 const routes = [
   {
@@ -32,7 +33,11 @@ const routes = [
     RouterModule.forChild(routes),
     ReactiveFormsModule,
     StoreModule.forFeature('auth', reducers),
-    EffectsModule.forFeature([RegisterEffect, LoginEffect]),
+    EffectsModule.forFeature([
+      RegisterEffect,
+      LoginEffect,
+      GetCurrentUserEffect,
+    ]),
     BackendErrorsMessagesModule,
   ],
   exports: [RegisterComponent],
