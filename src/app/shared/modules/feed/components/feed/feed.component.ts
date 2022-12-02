@@ -12,6 +12,7 @@ import {
 } from '../../store/selectors';
 import { GetFeedResponseInterface } from '../../types/get-feed-response.interface';
 
+import { stringify, parseUrl } from 'query-string';
 @Component({
   selector: 'mc-feed',
   templateUrl: './feed.component.html',
@@ -38,7 +39,6 @@ export class FeedComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initializeValues();
     this.initializeListeners();
-    this.fetchData();
   }
 
   ngOnDestroy(): void {
@@ -48,7 +48,9 @@ export class FeedComponent implements OnInit, OnDestroy {
   initializeListeners(): void {
     this.queryParamsSubscription = this.route.queryParams.subscribe(
       (params: Params) => {
+        console.log('params', params);
         this.currentPage = Number(params.page || '1');
+        this.fetchFeed();
       }
     );
   }
@@ -60,7 +62,18 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.baseUrl = this.router.url.split('?')[0];
   }
 
-  fetchData(): void {
-    this.store.dispatch(getFeedAction({ url: this.apiUrl }));
+  fetchFeed(): void {
+    //Interesting approach, liked it. It merges the params on the fly with this query-params library
+    const offset = this.currentPage * this.limit - this.limit;
+    const parsedUrl = parseUrl(this.apiUrl);
+
+    const stringfiedParams = stringify({
+      limit: this.limit,
+      offset,
+      ...parsedUrl.query,
+    });
+
+    const apiUrlWithParams = `${parsedUrl.url}?${stringfiedParams}`;
+    this.store.dispatch(getFeedAction({ url: apiUrlWithParams }));
   }
 }
