@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:4200/api', //using proxy
-  limit: 20,
+  limit: 10,
 };
 
 /*
