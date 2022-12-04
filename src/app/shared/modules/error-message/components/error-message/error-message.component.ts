@@ -6,5 +6,5 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ErrorMessageComponent {
   @Input()
-  message = 'Something went wrong';
+  message: string | null = 'Something went wrong';
 }
