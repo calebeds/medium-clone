@@ -11,7 +11,7 @@ import { AppStateInterface } from 'src/app/shared/types/app-state.interface';
 })
 export class FeedTogglerComponent implements OnInit {
   @Input()
-  tagName = '';
+  tagName: string | null = '';
 
   isLoggedIn$!: Observable<boolean | null>;
 
