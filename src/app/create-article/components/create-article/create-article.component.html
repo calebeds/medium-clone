@@ -1,1 +1,5 @@
-<mc-article-form></mc-article-form>
+<mc-article-form
+  [initialValues]="initialValues"
+  [isSubmitting]="true"
+  (articleSubmitEvent)="onSubmit($event)"
+></mc-article-form>

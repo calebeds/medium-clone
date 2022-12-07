@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ArticleInputInterface } from 'src/app/shared/types/article-input.interface';
 import { BackendErrorsInterface } from 'src/app/shared/types/backend-errors-interface';
 
@@ -9,7 +10,7 @@ import { BackendErrorsInterface } from 'src/app/shared/types/backend-errors-inte
 })
 export class ArticleFormComponent implements OnInit {
   @Input()
-  initialValue!: ArticleInputInterface;
+  initialValues!: ArticleInputInterface;
 
   @Input()
   isSubmitting!: boolean;
@@ -17,7 +18,27 @@ export class ArticleFormComponent implements OnInit {
   @Input()
   errors!: BackendErrorsInterface | null;
 
-  constructor() {}
+  @Output()
+  articleSubmitEvent = new EventEmitter<ArticleInputInterface>();
 
-  ngOnInit(): void {}
+  form!: FormGroup;
+
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.initializeForm();
+  }
+
+  initializeForm() {
+    this.form = this.fb.group({
+      title: this.initialValues.title,
+      description: this.initialValues.description,
+      body: this.initialValues.body,
+      tagList: this.initialValues.tagList.join(' '),
+    });
+  }
+
+  onSubmit(): void {
+    this.articleSubmitEvent.emit(this.form.value);
+  }
 }
