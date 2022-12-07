@@ -7,6 +7,7 @@ import { currentUserSelector } from 'src/app/auth/store/selectors';
 import { AppStateInterface } from 'src/app/shared/types/app-state.interface';
 import { ArticleInterface } from 'src/app/shared/types/article.interface';
 import { CurrentUserInterface } from 'src/app/shared/types/current-user.interface';
+import { deleteArticleAction } from '../../store/actions/delete-article.action';
 import { getArticleAction } from '../../store/actions/get-article.action';
 import {
   articleSelector,
@@ -75,5 +76,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   fetchData(): void {
     this.store.dispatch(getArticleAction({ slug: <string>this.slug }));
+  }
+
+  deleteArticle(): void {
+    this.store.dispatch(deleteArticleAction({ slug: <string>this.slug }));
   }
 }
