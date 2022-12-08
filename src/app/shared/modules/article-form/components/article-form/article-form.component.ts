@@ -13,7 +13,7 @@ export class ArticleFormComponent implements OnInit {
   initialValues!: ArticleInputInterface;
 
   @Input()
-  isSubmitting!: boolean;
+  isSubmitting!: boolean | null;
 
   @Input()
   errors!: BackendErrorsInterface | null;
@@ -39,6 +39,9 @@ export class ArticleFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.articleSubmitEvent.emit(this.form.value);
+    const tagList: string[] = [this.form.value.tagList];
+    const formValues = { ...(<ArticleInputInterface>this.form.value), tagList };
+
+    this.articleSubmitEvent.emit(formValues);
   }
 }
