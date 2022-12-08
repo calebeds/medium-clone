@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AppStateInterface } from 'src/app/shared/types/app-state.interface';
 import { ArticleInputInterface } from 'src/app/shared/types/article-input.interface';
 import { BackendErrorsInterface } from 'src/app/shared/types/backend-errors-interface';
@@ -16,12 +16,19 @@ import {
   styleUrls: ['./create-article.component.scss'],
 })
 export class CreateArticleComponent implements OnInit {
-  initialValues: ArticleInputInterface = {
+  // initialValues: ArticleInputInterface = {
+  //   title: '',
+  //   description: '',
+  //   body: '',
+  //   tagList: [''],
+  // };
+  initialValues = new BehaviorSubject<ArticleInputInterface>({
     title: '',
     description: '',
     body: '',
     tagList: [''],
-  };
+  });
+  initialValues$ = this.initialValues.asObservable();
 
   isSubmitting$!: Observable<boolean>;
   backendErrors$!: Observable<BackendErrorsInterface | null>;
