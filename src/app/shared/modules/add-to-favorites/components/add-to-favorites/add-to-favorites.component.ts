@@ -34,7 +34,6 @@ export class AddToFavoritesComponent implements OnInit {
       this.favoritesCount = this.favoritesCount - 1;
     } else {
       this.favoritesCount = this.favoritesCount + 1;
-      console.log(this.favoritesCount);
     }
 
     this.isFavorited = !this.isFavorited;
