@@ -20,7 +20,7 @@ export class UpdateCurrentUserEffect {
           map((currentUser) => updateCurrentUserSuccessAction({ currentUser })),
 
           catchError((errors: HttpErrorResponse) =>
-            of(updateCurrentUserFailureAction(errors.error.errors))
+            of(updateCurrentUserFailureAction({ errors: errors.error.errors }))
           )
         )
       )

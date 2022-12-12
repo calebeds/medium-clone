@@ -10,11 +10,12 @@ import { AuthService } from './services/auth-service/auth.service';
 import { EffectsModule } from '@ngrx/effects';
 import { RegisterEffect } from 'src/app/auth/store/effects/register.effect';
 import { BackendErrorsMessagesModule } from '../shared/modules/backend-errors-messages/backend-errors-messages.module';
-import { PersistenceService } from '../shared/services/persistence/persistence.service';
+import { PersistanceService } from '../shared/services/persistence/persistence.service';
 import { LoginEffect } from './store/effects/login.effect';
 import { LoginComponent } from './components/login/login.component';
 import { GetCurrentUserEffect } from './store/effects/get-current-user.effect';
 import { UpdateCurrentUserEffect } from './store/effects/update-current-user.effect';
+import { LogoutEffect } from './store/effects/logout.effect';
 
 const routes = [
   {
@@ -39,10 +40,11 @@ const routes = [
       LoginEffect,
       GetCurrentUserEffect,
       UpdateCurrentUserEffect,
+      LogoutEffect,
     ]),
     BackendErrorsMessagesModule,
   ],
   exports: [RegisterComponent],
-  providers: [AuthService, PersistenceService],
+  providers: [AuthService, PersistanceService],
 })
 export class AuthModule {}

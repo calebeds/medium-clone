@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { PersistenceService } from 'src/app/shared/services/persistence/persistence.service';
+import { PersistanceService } from 'src/app/shared/services/persistence/persistence.service';
 import { CurrentUserInterface } from 'src/app/shared/types/current-user.interface';
 import { AuthService } from '../../services/auth-service/auth.service';
 import {
@@ -36,6 +36,6 @@ export class GetCurrentUserEffect {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
-    private persistanceService: PersistenceService
+    private persistanceService: PersistanceService
   ) {}
 }

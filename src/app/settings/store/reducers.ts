@@ -2,6 +2,7 @@ import { Action, createReducer, on } from '@ngrx/store';
 import {
   updateCurrentUserAction,
   updateCurrentUserFailureAction,
+  updateCurrentUserSuccessAction,
 } from 'src/app/auth/store/actions/update-current-user.action';
 import { updateArticleSuccessAction } from 'src/app/edit-article/store/actions/update-article.action';
 import { SettingsStateInteface } from '../types/settings-state.interface';
@@ -18,8 +19,12 @@ const settingsReducers = createReducer(
     (state): SettingsStateInteface => ({ ...state, isSubmitting: true })
   ),
   on(
-    updateArticleSuccessAction,
-    (state): SettingsStateInteface => ({ ...state, isSubmitting: false })
+    updateCurrentUserSuccessAction,
+    (state): SettingsStateInteface => ({
+      ...state,
+      isSubmitting: false,
+      validationErrors: null,
+    })
   ),
   on(
     updateCurrentUserFailureAction,

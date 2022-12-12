@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
 import { TopbarModule } from './shared/modules/topbar/topbar.module';
-import { PersistenceService } from './shared/services/persistence/persistence.service';
+import { PersistanceService } from './shared/services/persistence/persistence.service';
 import { AuthInterceptorService } from './shared/services/auth-interceptor/auth-interceptor.service';
 import { GlobalFeedModule } from './global-feed/global-feed.module';
 import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
@@ -45,7 +45,7 @@ import { SettingsModule } from './settings/settings.module';
     SettingsModule,
   ],
   providers: [
-    PersistenceService,
+    PersistanceService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,

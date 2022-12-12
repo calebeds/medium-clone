@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { PersistenceService } from 'src/app/shared/services/persistence/persistence.service';
+import { PersistanceService } from 'src/app/shared/services/persistence/persistence.service';
 import { CurrentUserInterface } from 'src/app/shared/types/current-user.interface';
 import { AuthService } from '../../services/auth-service/auth.service';
 import {
@@ -48,7 +48,7 @@ export class LoginEffect {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
-    private persistanceService: PersistenceService,
+    private persistanceService: PersistanceService,
     private router: Router
   ) {}
 }
