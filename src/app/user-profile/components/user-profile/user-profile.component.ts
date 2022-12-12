@@ -1,4 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { combineLatest, Observable, Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { currentUserSelector } from 'src/app/auth/store/selectors';
+import { AppStateInterface } from 'src/app/shared/types/app-state.interface';
+import { CurrentUserInterface } from 'src/app/shared/types/current-user.interface';
+import { getUserProfileAction } from '../../store/actions/get-user-profile.action';
+import {
+  errorSelector,
+  isLoadingSelector,
+  userProfileSelector,
+} from '../../store/selectors';
+import { UserProfileInterface } from '../../types/user-profile.interface';
 
 @Component({
   selector: 'mc-user-profile',
@@ -6,7 +20,69 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-profile.component.scss'],
 })
 export class UserProfileComponent implements OnInit {
-  constructor() {}
+  userProfile!: UserProfileInterface;
+  isLoading$!: Observable<boolean>;
+  error$!: Observable<string | null>;
+  userProfileSubscription!: Subscription;
 
-  ngOnInit(): void {}
+  slug!: string;
+  isCurrentUserProfile$!: Observable<boolean>;
+
+  constructor(
+    private store: Store<AppStateInterface>,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.initializeValues();
+    this.initializeListeners();
+  }
+
+  initializeValues(): void {
+    this.slug = <string>this.route.snapshot.paramMap.get('slug');
+    this.isLoading$ = this.store.pipe(select(isLoadingSelector));
+    this.error$ = this.store.pipe(select(errorSelector));
+    this.isCurrentUserProfile$ = combineLatest([
+      <Observable<CurrentUserInterface>>(
+        this.store.pipe(select(currentUserSelector), filter(Boolean))
+      ),
+      <Observable<UserProfileInterface>>(
+        this.store.pipe(select(userProfileSelector), filter(Boolean))
+      ),
+    ]).pipe(
+      map(
+        ([currentUser, userProfile]: [
+          CurrentUserInterface,
+          UserProfileInterface
+        ]) => {
+          return currentUser.username === userProfile.username;
+        }
+      )
+    );
+  }
+
+  getApiUrl(): string {
+    const isFavorites = this.router.url.includes('favorites');
+    return isFavorites
+      ? `/articles?favorited=${this.slug}`
+      : `/articles?author=${this.slug}`;
+  }
+
+  initializeListeners(): void {
+    this.userProfileSubscription = this.store
+      .pipe(select(userProfileSelector))
+      .subscribe((userProfile: UserProfileInterface | null) => {
+        this.userProfile = <UserProfileInterface>userProfile;
+      });
+
+    this.route.params.subscribe((params: Params) => {
+      this.slug = params['slug'];
+      this.fetchUserProfile();
+    });
+  }
+
+  fetchUserProfile(): void {
+    this.store.dispatch(getUserProfileAction({ slug: this.slug }));
+  }
 }

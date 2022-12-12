@@ -12,7 +12,7 @@
         <img [src]="article.author.image" />
       </a>
       <div class="info">
-        <a [routerLink]="['profiles', article.author.username]">
+        <a [routerLink]="['/profiles', article.author.username]">
           {{ article.author.username }}
         </a>
         <span class="date">{{ article.createdAt }}</span>

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { FeedComponent } from 'src/app/shared/modules/feed/components/feed/feed.component';
 
 @Component({
   selector: 'mc-tag-feed',
@@ -8,17 +9,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class TagFeedComponent implements OnInit {
   tagName!: string | null;
-  apiUrl = '';
 
-  constructor(private route: ActivatedRoute, private router: Router) {
-    // this.router.events.subscribe(() => {
-    //   this.tagName = this.route.snapshot.paramMap.get('slug');
-    //   this.apiUrl = `/articles?tag=${this.tagName}`;
-    // });
-  }
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    this.tagName = this.route.snapshot.paramMap.get('slug');
-    this.apiUrl = `/articles?tag=${this.tagName}`;
+    this.route.params.subscribe((params: Params) => {
+      this.tagName = params['slug'];
+    });
+  }
+
+  getApiUrl(): string {
+    return `/articles?tag=${this.tagName}`;
   }
 }
